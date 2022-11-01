@@ -1,60 +1,11 @@
-# gotests-template
-Custom go tests template
-
-## Features
-
-- Simply error message process and check if errors match.
-
-- Add [testify](github.com/stretchr/testify) package to optimize error output.
-
-## Example
-
-**Source file**
-
-```go
 package f
 
-import "fmt"
+import (
+	"testing"
 
-func f1(a int) error {
-	if a == 3 {
-		return fmt.Errorf("err 3")
-	}
-	return nil
-}
+	"github.com/stretchr/testify/assert"
+)
 
-type D struct {
-	name string
-}
-
-type E struct {
-	id   int
-	name string
-	*F
-}
-
-type F struct {
-	id int
-}
-
-func f4(b int) (int, string, *D, *E, error) {
-	if b > 0 {
-
-	}
-	return 0, "", &D{
-			name: "foo",
-		}, &E{
-			id:   0,
-			name: "foo-E",
-			F:    &F{id: 100},
-		}, nil
-}
-
-```
-
-**test file**
-
-```go
 func Test_f1(t *testing.T) {
 	assert := assert.New(t)
 	type args struct {
@@ -93,6 +44,80 @@ func Test_f1(t *testing.T) {
 	}
 }
 
+func Test_f2(t *testing.T) {
+	assert := assert.New(t)
+	type args struct {
+		b int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+		err  string
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := f2(tt.args.b)
+			if err != nil {
+				if tt.err == "" {
+					t.Errorf("f2() return error: %v, but want nil", err)
+				} else {
+					assert.Contains(err.Error(), tt.err, "test: ["+tt.name+"] error message not eq")
+				}
+				return
+			}
+			assert.Equalf(got, tt.want, "f2() = %v, want %v", got, tt.want)
+		})
+	}
+}
+
+func Test_f3(t *testing.T) {
+	assert := assert.New(t)
+	type args struct {
+		b int
+	}
+	tests := []struct {
+		name  string
+		args  args
+		want  int
+		want1 *D
+		err   string
+	}{
+		{
+			name:  "",
+			args:  args{},
+			want:  0,
+			want1: &D{name: "foo"},
+			err:   "empty",
+		},
+		{
+			name: "b > 0",
+			args: args{
+				b: 2,
+			},
+			want:  0,
+			want1: &D{name: "foo"},
+			err:   "empty",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1, err := f3(tt.args.b)
+			if err != nil {
+				if tt.err == "" {
+					t.Errorf("f3() return error: %v, but want nil", err)
+				} else {
+					assert.Contains(err.Error(), tt.err, "test: ["+tt.name+"] error message not eq")
+				}
+				return
+			}
+			assert.Equalf(got, tt.want, "f3() got = %v, want %v", got, tt.want)
+			assert.Equalf(got1, tt.want1, "f3() got1 = %v, want %v", got1, tt.want1)
+		})
+	}
+}
 
 func Test_f4(t *testing.T) {
 	assert := assert.New(t)
@@ -140,22 +165,3 @@ func Test_f4(t *testing.T) {
 		})
 	}
 }
-```
-
-
-
-## Usage (VSCode)
-
-Add gotests template path setting to ./vscode/setting.json
-
-```json
-{
-  ...,
-  "go.generateTestsFlags": [
-    "-template_dir",
-    "./path/to/Ras96/gotests-template/templates" // Or templates2
-  ],
-  ...
-}
-```
-
