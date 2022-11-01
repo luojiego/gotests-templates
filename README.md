@@ -1,5 +1,5 @@
-# gotests-template
-Custom go tests template
+# gotests-templates
+Custom go tests templates.
 
 ## Features
 
