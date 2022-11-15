@@ -75,6 +75,8 @@ func {{.TestName}}(t *testing.T) {
                     {{- if .TestResults}}
                         {{if .Subtests }}return{{else}}continue{{end}}
                     {{- end}}
+                } else {
+                    assert.Equal("", tt.err, "test: ["+tt.name+"] return nil but want not nil")
                 }
             {{- end}}
 			{{- range .TestResults}}
