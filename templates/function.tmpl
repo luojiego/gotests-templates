@@ -68,7 +68,6 @@ func {{.TestName}}(t *testing.T) {
 			{{- if .ReturnsError}}
 				if {{if .OnlyReturnsError}} err := {{template "call" $f}}; {{end}} err != nil {
                     if tt.err == "" {
-                        // t.Errorf("{{template "message" $f}} return error: %v, but want nil", {{template "inputs" $f}} err)
                         assert.Equal({{template "inputs" $f}} err.Error(), "", "test: [" + tt.name + "] return not nil but want nil")
                     } else {
                         assert.Contains(err.Error(), tt.err, "test: [" + tt.name + "] error message not eq")
@@ -88,7 +87,6 @@ func {{.TestName}}(t *testing.T) {
 				{{- else}}
 					if {{if $f.OnlyReturnsOneValue}}{{Got .}} := {{template "inline" $f}}; {{end}} !reflect.DeepEqual({{Got .}}, tt.{{Want .}}) {
 				{{- end}}
-				// assert.Errorf("{{template "message" $f}} {{if $f.ReturnsMultiple}}{{Got .}} {{end}}= %v, want %v", {{template "inputs" $f}} {{Got .}}, tt.{{Want .}})
 				assert.Equal({{template "inputs" $f}} {{Got .}}, tt.{{Want .}}, "test: ["+tt.name+"] got not match want")
 				}
 			{{- end}}
