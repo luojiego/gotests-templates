@@ -68,7 +68,7 @@ func {{.TestName}}(t *testing.T) {
 			{{- if .ReturnsError}}
 				if {{if .OnlyReturnsError}} err := {{template "call" $f}}; {{end}} err != nil {
                     if tt.err == "" {
-                        assert.Equal({{template "inputs" $f}} err.Error(), "", "test: [" + tt.name + "] return not nil but want nil")
+                        assert.Equal({{template "inputs" $f}} err.Error(), "", "test: [" + tt.name + "] return: [" + err.Error() +"] not nil but want nil")
                     } else {
                         assert.Contains(err.Error(), tt.err, "test: [" + tt.name + "] error message not eq")
                     }
